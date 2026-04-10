@@ -1,0 +1,375 @@
+/* ─── Reset & Base ─── */
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --bg: #0d0d14;
+  --surface: #14141f;
+  --surface2: #1e1e2e;
+  --accent: #5b8df8;
+  --accent2: #f76a8a;
+  --text: #e8e8f0;
+  --text2: #8888a8;
+  --text3: #44445a;
+  --border: #2a2a3f;
+  --success: #4ade80;
+  --error: #f87171;
+  --kb-bg: #1a1a28;
+  --kb-key: #252538;
+  --kb-key-hover: #30304a;
+  --radius: 12px;
+  --radius-sm: 8px;
+  font-size: 16px;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Noto Sans SC', sans-serif;
+  height: 100%;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+#root, .app { height: 100%; }
+
+/* ─── App Layout ─── */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  max-width: 100%;
+}
+
+/* ─── URL Bar ─── */
+.url-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.nav-btn {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.url-input-wrap {
+  flex: 1;
+  position: relative;
+}
+
+.url-input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  color: var(--text);
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.url-input:focus { border-color: var(--accent); }
+
+.go-btn {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  border: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.url-history {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0; right: 0;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  z-index: 500;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.history-item {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  font-size: 0.82rem;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.history-item:hover { background: var(--surface); color: var(--text); }
+.history-item:last-child { border-bottom: none; }
+
+/* ─── Content Area ─── */
+.content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+/* ─── Ruffle Container ─── */
+.ruffle-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ruffle-container iframe,
+.ruffle-container embed,
+.ruffle-container object {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  border: none;
+  outline: none;
+}
+
+/* ─── Loading State ─── */
+.loading-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--bg);
+  z-index: 10;
+}
+.spinner-large {
+  width: 48px; height: 48px;
+  border: 3px solid var(--surface2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-state p { color: var(--text2); font-size: 0.88rem; }
+
+/* ─── Error State ─── */
+.error-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--bg);
+  z-index: 10;
+  padding: 24px;
+}
+.error-state p { color: var(--error); font-size: 0.9rem; text-align: center; }
+.retry-btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* ─── Home State ─── */
+.home-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--bg);
+  z-index: 10;
+  padding: 24px;
+}
+.home-logo { font-size: 3rem; margin-bottom: 8px; }
+.home-state h2 { font-size: 1.2rem; font-weight: 700; }
+.home-state p { color: var(--text2); font-size: 0.85rem; text-align: center; }
+.quick-links {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-width: 400px;
+}
+.ql-title { width: 100%; text-align: center; font-size: 0.75rem; color: var(--text3); margin-bottom: 4px; }
+.ql-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ql-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ─── Bottom Bar ─── */
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.bar-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ─── Game Controls ─── */
+.game-controls {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.ctrl-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-width: 36px;
+}
+.ctrl-btn:active { background: var(--accent); color: white; transform: scale(0.95); }
+
+/* ─── Virtual Keyboard ─── */
+.vkeyboard {
+  position: fixed;
+  bottom: 0;
+  left: 0; right: 0;
+  background: var(--kb-bg);
+  border-top: 1px solid var(--border);
+  z-index: 1000;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  animation: slideUp 0.2s ease;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+}
+@keyframes slideUp { from { transform: translateY(100%) } to { transform: translateY(0) } }
+
+.vk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  border-bottom: 1px solid rgba(42,42,63,0.5);
+}
+.vk-mode-tag {
+  font-size: 0.72rem;
+  color: var(--text3);
+  background: var(--surface2);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.vk-close {
+  background: none;
+  border: none;
+  color: var(--text2);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+/* ─── Num Pad ─── */
+.vk-numpad {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px;
+}
+.num-btn {
+  min-width: calc(20% - 4px);
+  height: 44px;
+  background: var(--kb-key);
+  border: none;
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.95rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.num-btn:active { background: var(--accent); color: white; }
+.num-btn.back { background: rgba(248,113,113,0.2); color: var(--error); }
+.num-btn.enter { background: rgba(74,222,128,0.2); color: var(--success); }
+
+/* ─── Full Keyboard ─── */
+.vk-keys { padding: 4px 4px 6px; }
+
+.vk-row {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 3px;
+  justify-content: center;
+}
+
+.vk-key {
+  height: 46px;
+  min-width: 28px;
+  background: var(--kb-key);
+  border: none;
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-family: inherit;
+  cursor: pointer;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.vk-key:active, .vk-key.pressed {
+  background: var(--accent) !important;
+  color: white !important;
+  transform: scale(0.94);
+}
+.vk-key.wide { flex: 1.5; font-size: 0.8rem; }
+.vk-key.extra { flex: 0.1; background: transparent; cursor: default; }
+.vk-key.backspace { background: rgba(248,113,113,0.2); color: var(--error); font-size: 0.8rem; }
+.vk-key.close { background: rgba(248,113,113,0.15); color: var(--error); font-size: 0.75rem; }
+.vk-key.shifted { background: var(--accent); color: white; }
