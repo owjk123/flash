@@ -1,0 +1,38 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.flashplayer.app'
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.flashplayer.app"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+// Capacitor 6 uses Kotlin - apply via buildscript classpath
+apply plugin: 'kotlin-android'
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.webkit:webkit:1.9.0'
+    implementation 'com.google.android.material:material:1.11.0'
+}
