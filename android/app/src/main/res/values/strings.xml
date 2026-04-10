@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">FlashPlayer</string>
+    <string name="title_activity_main">FlashPlayer</string>
+    <string name="package_name">com.flashplayer.app</string>
+    <string name="custom_url_scheme">com.flashplayer.app</string>
+</resources>
