@@ -41,24 +41,25 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
         
-      - name: Clear TypeScript build cache
+      - name: Clear build cache
         run: |
           rm -rf node_modules/.tmp
-          rm -f tsconfig.app.tsbuildinfo tsconfig.node.tsbuildinfo tsconfig.tsbuildinfo 2>/dev/null || true
           find . -name "*.tsbuildinfo" -delete 2>/dev/null || true
-          echo "Cache cleared"
-        
+          
       - name: Build web app
-        run: npm run build 2>&1
+        run: npm run build
         
-      - name: Sync Capacitor
-        run: npx cap sync android
-        
+      - name: Remove android and re-init
+        run: |
+          rm -rf android
+          npx cap add android
+          npx cap sync android
+          
       - name: Build debug APK
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon 2>&1 | tail -15
+          ./gradlew assembleDebug --no-daemon 2>&1 | tail -20
           
       - name: Upload APK
         uses: actions/upload-artifact@v4
